@@ -7,11 +7,16 @@ use App\Project;
 class ProjectsController extends Controller
 {
     public function index(){
+
         $projects=Project::all();
         return view('projects.index', compact('projects'));
+
     }
     public function store(){
-        Project::create(request(['title','description',]));
+
+        $attributes=request()->validate(['title'=>'required', 'description'=>'required']);
+        Project::create($attributes);
         return redirect('/projects');
+
     }
 }
