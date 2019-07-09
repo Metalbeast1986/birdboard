@@ -1,13 +1,16 @@
-<html>
-<head>
-    <title>Projects</title>
-</head>
-<body>
-    <h1>Birdboard</h1>
+@extends('layouts.app')
+
+@section('content')
+    <div style="display:flex; align-items: center;">
+        <h1 style="margin-right:auto;">Birdboard</h1>
+        <a href="/projects/create">Create New Project</a>
+    </div>
+
     <ul>
         @foreach($projects as $project)
-            {{$project->title}}
+        <li>
+            <a href="{{ $project->path() }}"> {{$project->title}}</a>      
+        </li>
         @endforeach
     </ul>
-</body>
-</html>
+@endsection
