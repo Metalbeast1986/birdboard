@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Project;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,16 +29,23 @@ class ManageProjectsTest extends TestCase
     public function test_a_user_can_create_a_project()
     {
         $this->withoutExceptionHandling();
+
         $this->signIn();
+
     //    $this->actingAs(factory('App\User')->create());
+    
         $this->get('/projects/create')->assertStatus(200);
 
         $attributes=[
             'title' => $this->faker->sentence,
             'description'=>$this->faker->paragraph
         ];
-        $this->post('/projects', $attributes);
+        $response = $this->post('/projects', $attributes);
+
+        $response->assertRedirect(Project::where($attributes)->first()->path());
+
         $this->assertDatabaseHas('projects',  $attributes);
+
         $this->get('/projects')->assertSee($attributes['title']);
     }
 
